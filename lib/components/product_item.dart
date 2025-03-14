@@ -13,8 +13,9 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           title: Text(product.title, textAlign: TextAlign.center),
           trailing: IconButton(
-            onPressed: () {},
             icon: Icon(Icons.shopping_cart),
+            onPressed: () {},
+            color: Theme.of(context).colorScheme.secondary,
           ),
           backgroundColor: Colors.black87,
           leading: IconButton(
