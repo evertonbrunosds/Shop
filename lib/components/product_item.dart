@@ -8,7 +8,10 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    final product = Provider.of<Product>(
+      context,
+      listen: false,
+    ); // impossibilita a atualização generalizada do widget
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -20,14 +23,16 @@ class ProductItem extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
           backgroundColor: Colors.black87,
-          leading: IconButton(
-            icon: Icon(
-              product.isFavorite ? Icons.favorite : Icons.favorite_border,
-            ),
-            onPressed: () {
-              product.toggleFavorite();
-            },
-            color: Theme.of(context).colorScheme.secondary,
+          leading: Consumer<Product>(
+            // possibilita a atualização específica do widget
+            builder:
+                (ctx, product, child) => IconButton(
+                  icon: Icon(
+                    product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  ),
+                  onPressed: product.toggleFavorite,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
           ),
         ),
         child: GestureDetector(
