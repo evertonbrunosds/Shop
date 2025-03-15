@@ -11,9 +11,11 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
+            centerTitle: true,
             title: Text('Bem-vindo Usuário'),
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.white,
+            automaticallyImplyLeading: false,
           ),
           Divider(),
           ListTile(

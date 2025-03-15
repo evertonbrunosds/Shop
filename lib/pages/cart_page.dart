@@ -13,6 +13,7 @@ class CartPage extends StatelessWidget {
     final items = cart.items.values.toList();
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Carrinho'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
