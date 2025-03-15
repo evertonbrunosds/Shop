@@ -17,9 +17,7 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  int get itemCount {
-    return _items.length;
-  }
+  int get itemsCount => _items.length;
 
   double get totalAmount {
     var total = 0.0;
@@ -53,5 +51,6 @@ class Cart with ChangeNotifier {
         ),
       );
     }
+    notifyListeners();
   }
 }
