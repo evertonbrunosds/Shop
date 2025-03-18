@@ -23,16 +23,21 @@ class _ProductFormPageState extends State<ProductFormPage> {
           child: Column(
             children: [
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Título'),
+                decoration: const InputDecoration(labelText: 'Nome'),
+                textInputAction: TextInputAction.next,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Descrição'),
+                textInputAction: TextInputAction.next,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Preço'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'URL da Imagem'),
+                textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 20),
               ElevatedButton(onPressed: () {}, child: const Text('Salvar')),
