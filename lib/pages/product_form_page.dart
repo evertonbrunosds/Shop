@@ -12,15 +12,33 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _descriptionFocus = FocusNode();
   final _priceFocus = FocusNode();
   final _imageUrlFocus = FocusNode();
+  final _imageUrlController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _imageUrlFocus.addListener(_updateImageUrl);
+  }
 
   @override
   void dispose() {
+    super.dispose();
     _nameFocus.dispose();
     _descriptionFocus.dispose();
     _priceFocus.dispose();
     _imageUrlFocus.dispose();
-    super.dispose();
+    _imageUrlFocus.removeListener(_updateImageUrl);
   }
+
+  void _updateImageUrl() {
+    if (isValidImageUrl(_imageUrlController.text)) {
+      setState(() {});
+    }
+  }
+
+  bool isValidImageUrl(String url) =>
+      url.toLowerCase().startsWith('http://') ||
+      url.toLowerCase().startsWith('https://');
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +81,42 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   FocusScope.of(context).requestFocus(_imageUrlFocus);
                 },
               ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'URL da Imagem'),
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.url,
-                focusNode: _imageUrlFocus,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).unfocus();
-                },
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _imageUrlController,
+                      decoration: const InputDecoration(
+                        labelText: 'URL da Imagem',
+                      ),
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.url,
+                      focusNode: _imageUrlFocus,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10, top: 10),
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    alignment: Alignment.center,
+                    child:
+                        _imageUrlController.text.isEmpty
+                            ? Text('URL da Imagem')
+                            : FittedBox(
+                              child: Image.network(
+                                _imageUrlController.text,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(onPressed: () {}, child: const Text('Salvar')),
