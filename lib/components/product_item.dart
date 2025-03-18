@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/utils/app_routes.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
@@ -16,8 +17,12 @@ class ProductItem extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () {},
               color: Theme.of(context).colorScheme.primary,
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).pushNamed(AppRoutes.productForm, arguments: product);
+              },
             ),
             IconButton(
               icon: const Icon(Icons.delete),
@@ -27,7 +32,6 @@ class ProductItem extends StatelessWidget {
           ],
         ),
       ),
-      subtitle: Text('R\$ ${product.price.toStringAsFixed(2)}'),
     );
   }
 }
