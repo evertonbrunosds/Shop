@@ -17,7 +17,7 @@ class ProductList with ChangeNotifier {
   }
 
   void addProduct(final Product product) {
-    http.post(
+    final future = http.post(
       Uri.parse('$_baseUrl/products.json'),
       body: jsonEncode({
         'name': product.name,
@@ -27,8 +27,19 @@ class ProductList with ChangeNotifier {
         'isFavorite': product.isFavorite,
       }),
     );
-    _products.add(product);
-    notifyListeners();
+    future.then((response) {
+      final id = jsonDecode(response.body)['name'];
+      _products.add(
+        Product(
+          id: id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+        ),
+      );
+      notifyListeners();
+    });
   }
 
   void saveProduct(Map<String, Object> data) {
