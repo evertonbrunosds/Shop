@@ -4,6 +4,7 @@ import 'package:shop/components/app_drawer.dart';
 import 'package:shop/components/badgee.dart';
 import 'package:shop/components/product_grid.dart';
 import 'package:shop/models/cart.dart';
+import 'package:shop/models/product_list.dart';
 import 'package:shop/utils/app_routes.dart';
 
 enum FilterOptions { favorites, all }
@@ -17,6 +18,18 @@ class ProductsOverviewPage extends StatefulWidget {
 
 class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   bool _showFavoritesOnly = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<ProductList>(context, listen: false).loadProducts().then((
+      value,
+    ) {
+      setState(() => _isLoading = false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +66,10 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
-      body: ProductGrid(showFavoritesOnly: _showFavoritesOnly),
+      body:
+          _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : ProductGrid(showFavoritesOnly: _showFavoritesOnly),
       drawer: AppDrawer(),
     );
   }
