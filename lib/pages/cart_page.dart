@@ -79,7 +79,7 @@ class _CartButtonState extends State<CartButton> {
                       context,
                       listen: false,
                     ).addOrder(widget.cart);
-                    setState(() => _isLoading = true);
+                    setState(() => _isLoading = false);
                     widget.cart.clear();
                   },
           style: TextButton.styleFrom(
