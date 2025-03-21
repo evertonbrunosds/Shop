@@ -10,6 +10,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     return ListTile(
       leading: CircleAvatar(backgroundImage: NetworkImage(product.imageUrl)),
       title: Text(product.name),
@@ -29,7 +30,7 @@ class ProductItem extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {
-                showDialog(
+                showDialog<bool>(
                   context: context,
                   builder:
                       (ctx) => AlertDialog(
@@ -37,13 +38,7 @@ class ProductItem extends StatelessWidget {
                         content: Text('Tem certeza?'),
                         actions: [
                           TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(true);
-                              Provider.of<ProductList>(
-                                context,
-                                listen: false,
-                              ).removeProduct(product);
-                            },
+                            onPressed: () => Navigator.of(context).pop(true),
                             child: Text('Sim'),
                           ),
                           TextButton(
@@ -52,7 +47,23 @@ class ProductItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                );
+                ).then((value) async {
+                  if (value ?? false) {
+                    try {
+                      await Provider.of<ProductList>(
+                        context,
+                        listen: false,
+                      ).removeProduct(product);
+                    } catch (error) {
+                      msg.showSnackBar(
+                        SnackBar(
+                          content: Text(error.toString()),
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                      );
+                    }
+                  }
+                });
               },
               color: Theme.of(context).colorScheme.error,
             ),
