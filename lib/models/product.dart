@@ -21,17 +21,17 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void _toogleFavorite() {
+  void _toggleFavorite() {
     isFavorite = !isFavorite;
     notifyListeners();
   }
 
   Future<void> toggleFavorite() async {
-    _toogleFavorite();
+    _toggleFavorite();
     final response = await http.patch(
       Uri.parse('${Constants.productsUrl}/$id.json'),
       body: jsonEncode({"isFavorite": isFavorite}),
     );
-    if (response.statusCode >= 400) _toogleFavorite();
+    if (response.statusCode >= 400) _toggleFavorite();
   }
 }
